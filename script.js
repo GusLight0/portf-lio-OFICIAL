@@ -160,8 +160,79 @@ if (typewriterElement) {
             j++;
             setTimeout(type, 100);
         }
+        
+        // Atualiza o atributo data-text para o efeito de glitch CSS funcionar
+        typewriterElement.setAttribute('data-text', typewriterElement.innerText);
     }
     
     // Inicia a animação após um pequeno delay
     setTimeout(type, 500);
 }
+
+// Efeito de "Poeira Digital" (Partículas) nas Seções
+const particleSections = ['about', 'projects', 'contact'];
+
+particleSections.forEach(sectionId => {
+    const section = document.getElementById(sectionId);
+
+    if (section) {
+        // Cria o container
+        const particlesContainer = document.createElement('div');
+        particlesContainer.className = 'particles-container';
+        particlesContainer.setAttribute('aria-hidden', 'true');
+        section.appendChild(particlesContainer);
+
+        const particleCount = 40; // Quantidade de partículas
+
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            
+            // Configurações aleatórias para cada partícula
+            const left = Math.random() * 100; // Posição horizontal (0 a 100%)
+            const duration = Math.random() * 20 + 15; // Duração entre 15s e 35s (bem lento)
+            const delay = Math.random() * 30; // Delay inicial para não subirem todas juntas
+            const opacity = Math.random() * 0.5 + 0.1; // Opacidade variável
+            const drift = (Math.random() - 0.5) * 150 + 'px'; // Desvio lateral
+
+            particle.style.left = `${left}%`;
+            particle.style.animationDuration = `${duration}s`;
+            particle.style.animationDelay = `-${delay}s`; // Delay negativo para já começarem espalhadas
+            particle.style.setProperty('--opacity', opacity);
+            particle.style.setProperty('--drift', drift);
+
+            particlesContainer.appendChild(particle);
+        }
+    }
+});
+
+// Active Scroll Spy (Menu destaca conforme rola a página)
+const sections = document.querySelectorAll('section');
+const navLinks = document.querySelectorAll('.nav a');
+
+const scrollObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            // Remove a classe ativa de todos os links
+            navLinks.forEach(link => link.classList.remove('active-link'));
+            
+            // Pega o ID da seção que está na tela
+            const id = entry.target.getAttribute('id');
+            
+            // Seleciona o link correspondente a esse ID
+            const activeLink = document.querySelector(`.nav a[href="#${id}"]`);
+            
+            // Adiciona a classe ativa
+            if (activeLink) {
+                activeLink.classList.add('active-link');
+            }
+        }
+    });
+}, {
+    threshold: 0.3, // Aciona quando 30% da seção estiver visível
+    rootMargin: "-10% 0px -10% 0px" // Ajuste fino para ativar um pouco antes do centro
+});
+
+sections.forEach(section => {
+    scrollObserver.observe(section);
+});

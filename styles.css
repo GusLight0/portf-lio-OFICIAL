@@ -27,6 +27,10 @@ body {
     --card-border: rgba(0, 255, 138, 0.06);
     --shadow-neon: rgba(0, 255, 138, 0.08);
     --fw-regular: 400;
+    --gemini-blue: #4285F4;
+    --gemini-purple: #8952ff;
+    --gemini-pink: #d843ab;
+    --gemini-orange: #ff8a35;
     --fw-medium: 600;
     --fw-bold: 800;
     font-family: 'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
@@ -34,6 +38,7 @@ body {
 
 /* Reset Global de Imagens para Responsividade Máxima */
 img {
+    --gemini-gradient: linear-gradient(135deg, var(--gemini-blue), var(--gemini-purple), var(--gemini-pink), var(--gemini-orange));
     max-width: 100%;
     height: auto;
     display: block;
@@ -160,11 +165,14 @@ nav.nav a::after {
     transition: width .3s cubic-bezier(.2, .9, .3, 1);
 }
 
-nav.nav a:hover {
+/* Estado Hover e Ativo (Scroll Spy) */
+nav.nav a:hover,
+nav.nav a.active-link {
     color: var(--green-neon);
 }
 
-nav.nav a:hover::after {
+nav.nav a:hover::after,
+nav.nav a.active-link::after {
     width: 100%;
 }
 
@@ -223,6 +231,11 @@ main {
     100% {
         background-position: 0 0, 0 0, 0 0, 0 0
     }
+}
+
+@keyframes rotate-gradient {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
 /* Ícones Flutuantes na Seção Home */
@@ -433,6 +446,62 @@ main {
     50% { opacity: 0; }
 }
 
+/* Efeito Glitch no Título */
+#typewriter-text {
+    position: relative;
+    display: inline-block;
+}
+
+/* Camadas do Glitch (inicialmente ocultas) */
+#typewriter-text::before,
+#typewriter-text::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    opacity: 0.8;
+    display: none; /* Só aparece no hover */
+}
+
+/* Ativa o glitch ao passar o mouse no título (h1) */
+.hero-name:hover #typewriter-text::before,
+.hero-name:hover #typewriter-text::after {
+    display: block;
+}
+
+.hero-name:hover #typewriter-text::before {
+    left: 2px;
+    text-shadow: -2px 0 var(--gemini-purple);
+    animation: glitch-anim-1 0.4s infinite linear alternate-reverse;
+}
+
+.hero-name:hover #typewriter-text::after {
+    left: -2px;
+    text-shadow: 2px 0 var(--green-neon);
+    animation: glitch-anim-2 0.4s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim-1 {
+    0% { clip-path: inset(20% 0 80% 0); transform: translate(-2px, 1px); }
+    20% { clip-path: inset(60% 0 10% 0); transform: translate(2px, -1px); }
+    40% { clip-path: inset(40% 0 50% 0); transform: translate(-2px, 2px); }
+    60% { clip-path: inset(80% 0 5% 0); transform: translate(2px, -2px); }
+    80% { clip-path: inset(10% 0 60% 0); transform: translate(-1px, 1px); }
+    100% { clip-path: inset(50% 0 30% 0); transform: translate(1px, -1px); }
+}
+
+@keyframes glitch-anim-2 {
+    0% { clip-path: inset(10% 0 60% 0); transform: translate(2px, -1px); }
+    20% { clip-path: inset(30% 0 20% 0); transform: translate(-2px, 1px); }
+    40% { clip-path: inset(70% 0 10% 0); transform: translate(2px, -2px); }
+    60% { clip-path: inset(20% 0 50% 0); transform: translate(-2px, 2px); }
+    80% { clip-path: inset(60% 0 30% 0); transform: translate(1px, -1px); }
+    100% { clip-path: inset(5% 0 80% 0); transform: translate(-1px, 1px); }
+}
+
 .hero-lead {
     margin-top: .4rem;
     color: rgba(234, 250, 240, 0.9);
@@ -533,6 +602,12 @@ section {
     pointer-events: none;
     background: radial-gradient(circle at 80% 20%, rgba(0, 255, 138, 0.05), transparent 35%),
                 radial-gradient(circle at 20% 90%, rgba(0, 192, 122, 0.04), transparent 40%);
+}
+
+/* Garante que o conteúdo fique acima das partículas no Sobre */
+#about .container {
+    position: relative;
+    z-index: 2;
 }
 
 .about-content {
@@ -652,8 +727,55 @@ section {
 
 /* Estilos para a seção PROJETOS */
 #projects {
-    background-color: var(--bg);
+    background-color: var(--bg-2); /* Alterado de --bg para --bg-2 para igualar aos outros */
     background-image: radial-gradient(circle at 50% 20%, rgba(0, 192, 122, 0.03), transparent 60%);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Garante que o conteúdo fique acima das partículas */
+#projects .container {
+    position: relative;
+    z-index: 2;
+}
+
+/* Container das partículas */
+.particles-container {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Estilo da partícula individual */
+.particle {
+    position: absolute;
+    background: var(--green-neon);
+    width: 2px;
+    height: 2px;
+    border-radius: 50%;
+    opacity: 0;
+    box-shadow: 0 0 4px var(--green-neon); /* Pequeno brilho */
+    animation: float-up linear infinite;
+}
+
+@keyframes float-up {
+    0% {
+        top: 100%; /* Começa no fundo da seção */
+        transform: translateX(0);
+        opacity: 0;
+    }
+    20% {
+        opacity: var(--opacity);
+    }
+    80% {
+        opacity: var(--opacity);
+    }
+    100% {
+        top: -10%; /* Sobe até sair da seção */
+        transform: translateX(var(--drift));
+        opacity: 0;
+    }
 }
 
 /* Filtros de Projetos */
@@ -865,26 +987,45 @@ section {
 
 .certificates-list {
     display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 1.5rem;
-    max-width: 900px; /* Limita a largura para melhor leitura */
 }
 
 .certificate-card {
-    background: linear-gradient(90deg, var(--glass-2), transparent);
+    background: linear-gradient(160deg, var(--glass), var(--glass-2));
     border: 1px solid var(--card-border);
-    border-left: 3px solid var(--green-dark); /* Indicador lateral */
     padding: 1.5rem;
-    border-radius: 8px;
+    border-radius: 12px;
     transition: all 0.3s ease;
     position: relative;
+    overflow: hidden;
+}
+
+.certificate-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px; /* Gradiente verde consistente com o site */
+    background: linear-gradient(90deg, var(--green-neon), var(--green-mid));
+    background-size: 200% 200%;
+    opacity: 0;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
 .certificate-card:hover {
-    background: linear-gradient(90deg, var(--glass), rgba(0, 255, 138, 0.02));
-    border-left-color: var(--green-neon); /* Brilha ao passar o mouse */
-    transform: translateX(10px); /* Movimento sutil para a direita */
-    box-shadow: -5px 5px 20px rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px);
+    /* Sombra mais sutil e alinhada com a paleta de cores */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15), 0 0 15px var(--shadow-neon);
+}
+
+.certificate-card:hover::before {
+    opacity: 1;
+    transform: scaleX(1);
 }
 
 .cert-header {
@@ -894,6 +1035,12 @@ section {
     flex-wrap: wrap;
     gap: 0.5rem;
     margin-bottom: 0.8rem;
+}
+
+/* Título do certificado mais destacado */
+.cert-header h3 {
+    color: var(--green-neon);
+    font-weight: var(--fw-bold);
 }
 
 .cert-date {
@@ -910,6 +1057,8 @@ section {
     background: 
         radial-gradient(circle at 50% 100%, rgba(0, 255, 138, 0.04), transparent 40%),
         linear-gradient(180deg, var(--bg-2) 0%, #040d0b 100%);
+    position: relative;
+    overflow: hidden;
 }
 
 .contact-container {
@@ -922,6 +1071,12 @@ section {
     .contact-container {
         grid-template-columns: 2fr 1fr;
     }
+}
+
+/* Garante que o conteúdo fique acima das partículas no Contato */
+#contact .container {
+    position: relative;
+    z-index: 2;
 }
 
 /* Painel de contato (para o form e para as infos) */
@@ -974,14 +1129,29 @@ section {
     color: #ff4d4d;
 }
 
+/* Botão de envio com estilo minimalista e animado */
+#contact .btn.primary {
+    border: 1px solid var(--green-dark);
+    color: var(--text);
+    /* O gradiente agora usa as cores do site (verdes) */
+    background: linear-gradient(90deg, var(--green-dark) 0%, var(--green-mid) 50%, var(--green-dark) 100%);
+    background-size: 200% 100%;
+    background-position: 100% 0; /* Começa do lado direito (escuro) */
+    transition: background-position 0.8s ease-in-out, transform .2s, box-shadow .2s;
+}
+#contact .btn.primary:hover {
+    background-position: 0 0; /* Move o gradiente para a esquerda, revelando o verde claro */
+    box-shadow: 0 0 20px rgba(0, 255, 138, 0.2);
+    border-color: var(--green-mid);
+}
+
 /* Lista de informações de contato com ícones */
 .contact-info {
     list-style: none;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-    height: 100%;
-    justify-content: center;
+    margin-bottom: 2rem;
 }
 
 .contact-info li {
@@ -998,9 +1168,39 @@ section {
 }
 
 .contact-info a {
+    font-size: .85rem;
     font-weight: 600;
     word-break: break-all;
 }
+
+/* Imagem Decorativa no Painel de Contato */
+.contact-image-wrapper {
+    width: 100%;
+    height: 200px;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid var(--card-border);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.contact-img-decoration {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Filtro para deixar a imagem verde/cyberpunk */
+    filter: grayscale(100%) sepia(100%) hue-rotate(90deg) saturate(300%) brightness(0.8);
+    transition: all 0.5s ease;
+    transform: scale(1.05);
+}
+
+.contact-image-wrapper:hover .contact-img-decoration {
+    /* Remove o filtro e dá um zoom suave ao passar o mouse */
+    filter: none;
+    transform: scale(1);
+    filter: brightness(1.1);
+}
+
 
 /* Tipografia geral */
 h1,
@@ -1039,9 +1239,36 @@ a:hover {
 
 /* Estilos para o Rodapé */
 footer {
-    padding: 2rem 1rem;
+    padding: 3rem 1rem 2rem;
     border-top: 1px solid rgba(0, 255, 138, 0.1);
     background: var(--bg-2);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Linha de brilho superior futurista */
+footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(400px, 80vw); /* Garante que não seja muito largo em telas pequenas */
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--green-neon), transparent);
+    opacity: 0.4;
+}
+
+/* Brilho de fundo imersivo */
+footer::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 250px;
+    background: radial-gradient(circle at 50% 100%, rgba(0, 255, 138, 0.07), transparent 70%);
+    pointer-events: none;
 }
 
 footer .container {
@@ -1050,6 +1277,28 @@ footer .container {
     align-items: center;
     flex-wrap: wrap;
     gap: 1rem;
+    position: relative; /* Garante que o conteúdo fique acima dos brilhos */
+    z-index: 2;
+}
+
+/* Ícones Sociais do Footer */
+.footer-socials {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.footer-socials a {
+    color: rgba(234, 250, 240, 0.6);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+}
+
+.footer-socials a:hover {
+    color: var(--green-neon);
+    transform: translateY(-3px) scale(1.1);
+    filter: drop-shadow(0 0 8px var(--green-neon));
 }
 
 /* Responsividade */
