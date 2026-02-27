@@ -139,12 +139,20 @@
         <div class="container">
             <h2 class="reveal">Projetos Selecionados</h2>
             
-            <!-- Filtros de Projetos -->
-            <div class="project-filters reveal">
-                <button class="filter-btn active" data-filter="all">Todos <span class="filter-count">0</span></button>
-                <button class="filter-btn" data-filter="apps-reais">Apps Reais <span class="filter-count">0</span></button>
-                <button class="filter-btn" data-filter="apps-training">Apps Training <span class="filter-count">0</span></button>
-                <button class="filter-btn" data-filter="game-others">Games/Others <span class="filter-count">0</span></button>
+            <!-- Controles de projetos (ícone + filtros) -->
+            <div class="project-controls reveal">
+                <button class="filter-toggle" aria-label="Mostrar filtros" aria-expanded="false">
+                    <!-- simples ícone de filtro -->
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="24" height="24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L15 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 019 21v-7.586L3.293 6.707A1 1 0 013 6V4z"/>
+                    </svg>
+                </button>
+                <div class="project-filters">
+                    <button class="filter-btn active" data-filter="all" aria-pressed="true">Todos <span class="filter-count">0</span></button>
+                    <button class="filter-btn" data-filter="apps-reais" aria-pressed="false">Apps Reais <span class="filter-count">0</span></button>
+                    <button class="filter-btn" data-filter="apps-training" aria-pressed="false">Apps Training <span class="filter-count">0</span></button>
+                    <button class="filter-btn" data-filter="game-others" aria-pressed="false">Games/Others <span class="filter-count">0</span></button>
+                </div>
             </div>
 
             <div class="project-gallery">
@@ -152,7 +160,7 @@
                 <!-- Projeto 1 -->
                 <article class="project-card reveal" data-category="apps-reais">
                     <div class="project-image">
-                        <img src="./assets/img/alg.png" alt="Preview do Projeto 1 (AlgDivulga+)">
+                        <img src="./assets/img/alg.png" alt="Preview do Projeto 1 (AlgDivulga+)" loading="lazy">
                     </div>
                     <div class="project-content">
                         <h3>ALGdivulga+</h3>
@@ -180,7 +188,7 @@
                 <!-- Projeto 2 -->
                 <article class="project-card reveal" data-category="apps-training">
                     <div class="project-image">
-                        <img src="./assets/img/ass META.png" alt="Preview do Projeto 2 (Assistente de Meta)">
+                        <img src="./assets/img/ass META.png" alt="Preview do Projeto 2 (Assistente de Meta)" loading="lazy">
                     </div>
                     <div class="project-content">
                         <h3>Assistente de Meta</h3>
@@ -208,7 +216,7 @@
 
                 <article class="project-card reveal" data-category="game-others">
                     <div class="project-image">
-                        <img src="./assets/img/calcgus.png" alt="Preview do Projeto 3 ( Calculadora )">
+                        <img src="./assets/img/calcgus.png" alt="Preview do Projeto 3 ( Calculadora )" loading="lazy">
                     </div>
                     <div class="project-content">
                         <h3>Calculadora</h3>
@@ -239,83 +247,99 @@
     <section id="certificates">
         <div class="container">
             <h2 class="reveal">Certificações</h2>
-            <div class="certificates-list">
-                
-                <!-- Certificado 1 -->
-                <div class="certificate-card reveal">
-                    <div class="cert-header">
-                        <h3>Escola do Trabalhador 4.0</h3>
-                        <span class="cert-date">Concluído em: jan 2025</span>
+            <div class="carousel-wrapper">
+                <button class="carousel-btn prev" aria-label="Certificado anterior">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                </button>
+                <div class="certificates-list">
+                    
+                    <!-- Certificado 1 -->
+                    <div class="certificate-card reveal">
+                        <div class="cert-header">
+                            <h3>Escola do Trabalhador 4.0</h3>
+                            <span class="cert-date">Concluído em: jan 2025</span>
+                        </div>
+                        <p>Escrevendo o primeiro código C#.</p>
                     </div>
-                    <p>Escrevendo o primeiro código C#.</p>
-                </div>
 
-                <!-- Certificado 2 -->
-                <div class="certificate-card reveal">
-                    <div class="cert-header">
-                        <h3>Fundação Bradesco</h3>
-                        <span class="cert-date">Concluído em: jan 2025</span>
+                    <!-- Certificado 2 -->
+                    <div class="certificate-card reveal">
+                        <div class="cert-header">
+                            <h3>Fundação Bradesco</h3>
+                            <span class="cert-date">Concluído em: jan 2025</span>
+                        </div>
+                        <p>Fundamentos do Design Gráfico.</p>
                     </div>
-                    <p>Fundamentos do Design Gráfico.</p>
-                </div>
 
-                <!-- Certificado 3 -->
-                <div class="certificate-card reveal">
-                    <div class="cert-header">
-                        <h3>Fundação Bradesco</h3>
-                        <span class="cert-date">Concluído em: fev 2025</span>
+                    <!-- Certificado 3 -->
+                    <div class="certificate-card reveal">
+                        <div class="cert-header">
+                            <h3>Fundação Bradesco</h3>
+                            <span class="cert-date">Concluído em: fev 2025</span>
+                        </div>
+                        <p>Escrevendo o primeiro código C#.</p>
                     </div>
-                    <p>Escrevendo o primeiro código C#.</p>
-                </div>
 
-                <div class="certificate-card reveal">
-                    <div class="cert-header">
-                        <h3>Rockeatseat</h3>
-                        <span class="cert-date">Concluído em: jun 2025</span>
+                    <div class="certificate-card reveal">
+                        <div class="cert-header">
+                            <h3>Rockeatseat</h3>
+                            <span class="cert-date">Concluído em: jun 2025</span>
+                        </div>
+                        <p>especialização/formação em Discover</p>
                     </div>
-                    <p>especialização/formação em Discover</p>
-                </div>
 
-                <div class="certificate-card reveal">
-                    <div class="cert-header">
-                        <h3>Rockeatseat</h3>
-                        <span class="cert-date">Concluído em: jul 2025</span>
+                    <div class="certificate-card reveal">
+                        <div class="cert-header">
+                            <h3>Rockeatseat</h3>
+                            <span class="cert-date">Concluído em: jul 2025</span>
+                        </div>
+                        <p>Fundamentos da programação Web, estruturação de páginas com HTML, estilização de páginas com CSS, conceitos essenciais da internet, primeiros passos com JavaScript, lógica de programação, introdução prática à Inteligência Artificial, LLMs (Large Language Models), agentes de IA, técnicas de engenharia de prompt e o uso de ferramentas como Gemini.</p>
                     </div>
-                    <p>Fundamentos da programação Web, estruturação de páginas com HTML, estilização de páginas com CSS, conceitos essenciais da internet, primeiros passos com JavaScript, lógica de programação, introdução prática à Inteligência Artificial, LLMs (Large Language Models), agentes de IA, técnicas de engenharia de prompt e o uso de ferramentas como Gemini.</p>
-                </div>
 
-                <div class="certificate-card reveal">
-                    <div class="cert-header">
-                        <h3>DevClub</h3>
-                        <span class="cert-date">Concluído em: ago 2025</span>
+                    <div class="certificate-card reveal">
+                        <div class="cert-header">
+                            <h3>DevClub</h3>
+                            <span class="cert-date">Concluído em: ago 2025</span>
+                        </div>
+                        <p>HTML.</p>
                     </div>
-                    <p>HTML.</p>
-                </div>
 
-                <div class="certificate-card reveal">
-                    <div class="cert-header">
-                        <h3>DevClub</h3>
-                        <span class="cert-date">Concluído em: set 2025</span>
+                    <div class="certificate-card reveal">
+                        <div class="cert-header">
+                            <h3>DevClub</h3>
+                            <span class="cert-date">Concluído em: set 2025</span>
+                        </div>
+                        <p>CSS.</p>
                     </div>
-                    <p>CSS.</p>
-                </div>
 
-                <div class="certificate-card reveal">
-                    <div class="cert-header">
-                        <h3>DevClub</h3>
-                        <span class="cert-date">Concluído em: dez 2025</span>
+                    <div class="certificate-card reveal">
+                        <div class="cert-header">
+                            <h3>DevClub</h3>
+                            <span class="cert-date">Concluído em: nov 2025</span>
+                        </div>
+                        <p>criar um site HTML, CSS e JavaScript.</p>
                     </div>
-                    <p>Git e GitHub.</p>
-                </div>
 
-                <div class="certificate-card reveal">
-                    <div class="cert-header">
-                        <h3>Studio Games pro education</h3>
-                        <span class="cert-date">Concluído em: ago 2024</span>
+                    <div class="certificate-card reveal">
+                        <div class="cert-header">
+                            <h3>DevClub</h3>
+                            <span class="cert-date">Concluído em: dez 2025</span>
+                        </div>
+                        <p>Git e GitHub.</p>
                     </div>
-                    <p>curso de programação, design gráfico trabalhando com adobe Photoshop, e criação de jogos.</p>
-                </div>
 
+                    <div class="certificate-card reveal">
+                        <div class="cert-header">
+                            <h3>Studio Games pro education</h3>
+                            <span class="cert-date">Concluído em: ago 2024</span>
+                        </div>
+                        <p>curso de programação, design gráfico trabalhando com adobe Photoshop, e criação de jogos.</p>
+                    </div>
+
+                </div>
+                <button class="carousel-btn next" aria-label="Próximo certificado">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </button>
             </div>
         </div>
     </section>

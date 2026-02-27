@@ -46,14 +46,22 @@ const projectCards = document.querySelectorAll('.project-card');
 if (filterBtns.length > 0 && projectCards.length > 0) {
     filterBtns.forEach(btn => {
         btn.addEventListener('click', () => {
-            // Remove a classe active de todos os botões
-            filterBtns.forEach(b => b.classList.remove('active'));
-            // Adiciona a classe active ao botão clicado
+            // Remove a classe active de todos os botões e desmarca ARIA
+            filterBtns.forEach(b => {
+                b.classList.remove('active');
+                b.setAttribute('aria-pressed', 'false');
+            });
+            // Adiciona a classe active ao botão clicado e marca ARIA
             btn.classList.add('active');
+            btn.setAttribute('aria-pressed', 'true');
 
+            // ensure the clicked button is visible on small screens
+            btn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+
+            // captura o filtro escolhido antes de usar dentro do timeout
             const filterValue = btn.getAttribute('data-filter');
 
-            // 1. Inicia animação de saída (fade-out) em TODOS os cards
+            // Inicia animação de saída (fade-out) em TODOS os cards
             projectCards.forEach(card => {
                 card.classList.add('anim-out');
             });
@@ -93,6 +101,20 @@ if (filterBtns.length > 0 && projectCards.length > 0) {
     
     // Chama a função ao carregar a página
     updateFilterCounts();
+
+    // todo: tornar clique no card inteiro direcionar para o link 'Ver Online'
+    projectCards.forEach(card => {
+        const primary = card.querySelector('.btn-project.primary');
+        if (primary) {
+            card.style.cursor = 'pointer';
+            card.addEventListener('click', e => {
+                // se o clique não aconteceu em um link dentro do card, abre o principal
+                if (!e.target.closest('a')) {
+                    window.open(primary.href, '_blank');
+                }
+            });
+        }
+    });
 }
 
 // Formulário de Contato (Formspree com AJAX)
@@ -206,6 +228,49 @@ particleSections.forEach(sectionId => {
     }
 });
 
+// toggle filters visibility (small screens)
+const filterToggle = document.querySelector('.filter-toggle');
+if (filterToggle) {
+    filterToggle.addEventListener('click', () => {
+        const controls = filterToggle.closest('.project-controls');
+        const open = controls.classList.toggle('filters-open');
+        filterToggle.setAttribute('aria-expanded', open);
+    });
+}
+
+// add numbering to certificates (index/total) and count per issuer
+const certCards = document.querySelectorAll('.certificate-card');
+if (certCards.length) {
+    const total = certCards.length;
+    // count occurrences per issuer text
+    const counts = {};
+    certCards.forEach(card => {
+        const header = card.querySelector('.cert-header h3');
+        if (header) {
+            const key = header.textContent.trim();
+            counts[key] = (counts[key] || 0) + 1;
+        }
+    });
+
+    certCards.forEach((card, idx) => {
+        const header = card.querySelector('.cert-header h3');
+        if (header) {
+            const span = document.createElement('span');
+            span.className = 'cert-index';
+            span.textContent = `${idx + 1}/${total}`;
+            header.prepend(span);
+
+            const key = header.textContent.trim();
+            if (counts[key] > 1) {
+                const badge = document.createElement('span');
+                badge.className = 'cert-issuer-count';
+                badge.textContent = `(${counts[key]})`;
+                header.appendChild(badge);
+            }
+        }
+    });
+}
+
 // Active Scroll Spy (Menu destaca conforme rola a página)
 const sections = document.querySelectorAll('section');
 const navLinks = document.querySelectorAll('.nav a');
@@ -236,3 +301,57 @@ const scrollObserver = new IntersectionObserver((entries) => {
 sections.forEach(section => {
     scrollObserver.observe(section);
 });
+
+// Carrossel de Certificados com Setas
+const carouselWrapper = document.querySelector('.carousel-wrapper');
+
+if (carouselWrapper) {
+    const carouselList = carouselWrapper.querySelector('.certificates-list');
+    const prevBtn = carouselWrapper.querySelector('.carousel-btn.prev');
+    const nextBtn = carouselWrapper.querySelector('.carousel-btn.next');
+
+    // helper to update visibility of arrows depending on scroll position
+    function updateCarouselButtons() {
+        if (!carouselList) return;
+        const scrollLeft = carouselList.scrollLeft;
+        const maxScroll = carouselList.scrollWidth - carouselList.clientWidth;
+        // small tolerance for rounding
+        const atStart = scrollLeft <= 10;
+        const atEnd = scrollLeft >= maxScroll - 10;
+
+        if (prevBtn) prevBtn.style.display = atStart ? 'none' : 'flex';
+        if (nextBtn) nextBtn.style.display = atEnd ? 'none' : 'flex';
+    }
+
+    if (carouselList && prevBtn && nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            const card = carouselList.querySelector('.certificate-card');
+            if (!card) return;
+
+            const gap = parseFloat(window.getComputedStyle(carouselList).gap);
+            const scrollAmount = card.offsetWidth + gap;
+            
+            carouselList.scrollBy({
+                left: scrollAmount,
+                behavior: 'smooth'
+            });
+        });
+
+        prevBtn.addEventListener('click', () => {
+            const card = carouselList.querySelector('.certificate-card');
+            if (!card) return;
+
+            const gap = parseFloat(window.getComputedStyle(carouselList).gap);
+            const scrollAmount = card.offsetWidth + gap;
+
+            carouselList.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+        });
+
+        // listen for scroll and resize to adjust arrows
+        carouselList.addEventListener('scroll', updateCarouselButtons);
+        window.addEventListener('resize', updateCarouselButtons);
+
+        // initial setup
+        updateCarouselButtons();
+    }
+}
