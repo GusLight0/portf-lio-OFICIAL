@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- A fonte Poppins já é importada no CSS, então esta linha não é estritamente necessária, mas não causa problemas. -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <meta name="theme-color" content="#071028">
+    <title>Portfólio Profissional | Dev Gustavo</title>
+    <link rel="stylesheet" href="./styles.css">
+    <meta name="description" content="Portfólio de Gustavo, Desenvolvedor focado em soluções inovadoras e resultados reais.">
+</head>
+<body>
+    
+    <!-- MENU DE NAVEGAÇÃO FIXO -->
+    <header class="site-header">
+        <div class="header-inner">
+            <a href="#home" class="brand">
+                <span class="brand-line">GUSTAVO</span>
+                <span class="brand-accent">DEV</span>
+            </a>
+            
+            <!-- Botão Menu Mobile -->
+            <button class="mobile-menu-btn" aria-label="Abrir menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+
+            <nav class="nav">
+                <a href="#home">Início</a>
+                <a href="#about">Sobre</a>
+                <a href="#projects">Projetos</a>
+                <a href="#certificates">Certificados</a>
+                <a href="#contact">Contato</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- SEÇÃO 1: INÍCIO (HOME/HERO) -->
+    <main>
+        <section id="home">
+            <div class="floating-icons" aria-hidden="true">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML5 Icon" class="icon-float" id="icon-html">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS3 Icon" class="icon-float" id="icon-css">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript Icon" class="icon-float" id="icon-js">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Git Icon" class="icon-float" id="icon-git">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" alt="Figma Icon" class="icon-float" id="icon-figma">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub Icon" class="icon-float" id="icon-github">
+            </div>
+            <div class="hero-card reveal">
+                <div class="hero-left">
+                    <div class="hero-avatar">
+                        <img src="./assets/img/EU GUS.png" alt="Gustavo Dev">
+                        <div class="avatar-ring"></div>
+                    </div>
+                    <div class="hero-mini-skills">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML5" title="HTML5">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS3" title="CSS3">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript" title="JavaScript">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Git" title="Git">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" alt="Figma" title="Figma">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub" title="GitHub" class="icon-invert">
+                    </div>
+                </div>
+                <div class="hero-right">
+                    <span class="role">Desenvolvedor · Experiências Imersivas</span>
+                    <h1 class="hero-name">
+                        <span id="typewriter-text"></span><span class="typewriter-cursor">|</span>
+                    </h1>
+                    <p class="hero-lead">
+                        Sou estudande de programação e desenvolvimento web com apenas 16 anos já entendo muito de linguagem de programção.
+                    </p>
+                    <div class="ctas">
+                        <a class="btn primary" href="#projects">Ver projetos</a>
+                        <a class="btn outline" href="#contact">Contato</a>
+                    </div>
+                </div>
+                <div class="neon-accents" aria-hidden="true"></div>
+            </div>
+        </section>
+
+    <!-- SEÇÃO 2: SOBRE (ABOUT) -->
+    <section id="about">
+        <div class="container">
+            <h2 class="reveal">Sobre Mim</h2>
+            <div class="about-content"> <!-- Grid container -->
+                <div class="about-panel about-text reveal"> <!-- Panel 1: Text -->
+                    <h3 class="panel-title">Minha História</h3>
+                    <p>
+                        Com 16 anos de idade já desenvolvi muito conhecimento na área de programação, desde os 10 anos eu vou aprendendo e cursando aulas de programação e criação de jogos, sempre fui apaixonado por essa parte de tecnológia que sempre foi meu forte, meu forte sempre foi matemática, lógica, resolução de problemas e procura de soluções, eu gosto bastante de desafios, e nunca consigo deixar um incompleto, eu aprendo com meus erros e tento melhorar com eles, eu planejo pro meu futuro, terminar meu curso Full-Stack até os 18 anos e ir para a faculdade de Engenharia da Computação, e conseguir um emprego bem remunerado e que seja flexível, isso é o que eu quero pro meu futuro.
+                    </p>
+                    <a class="btn primary" href="./assets/curriculo/curriculo.pdf" download>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        Baixar Currículo
+                    </a>
+                </div>
+                <div class="about-panel about-skills reveal"> <!-- Panel 2: Skills -->
+                    <h3 class="panel-title">Habilidades</h3>
+                    <ul class="skills-grid">
+                        <li><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML5 icon"><span>HTML5</span></li>
+                        <li><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS3 icon"><span>CSS3</span></li>
+                        <li><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript icon"><span>JavaScript</span></li>
+                        <li><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" alt="Node.js icon"><span>Node.js</span></li>
+                        <li><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" alt="Figma icon"><span>Figma</span></li>
+                        <li><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Git icon"><span>Git</span></li>
+                        <li class="skill-soft"><span>Lógica de Programação</span></li>
+                        <li class="skill-soft"><span>Resolução de Problemas</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SEÇÃO OPCIONAL: SERVIÇOS -->
+    <section id="services">
+        <div class="container">
+            <h2 class="reveal">O que eu ofereço</h2>
+            <div class="services-grid">
+                <div class="service-card reveal">
+                    <h3>Landing Pages</h3>
+                    <p>Sites de uma página, simples e otimizados para conversão e performance.</p>
+                </div>
+                <div class="service-card reveal">
+                    <h3>Identidade Visual</h3>
+                    <p>Criação ou modernização da estética visual de sua marca para redes sociais e web.</p>
+                </div>
+                <div class="service-card reveal">
+                    <h3>Portfólio</h3>
+                    <p>Criação de portfólio profissional para exibir seus projetos e habilidades de forma atrativa.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SEÇÃO 3: PROJETOS (PORTFOLIO) -->
+    <section id="projects">
+        <div class="container">
+            <h2 class="reveal">Projetos Selecionados</h2>
+            
+            <!-- Filtros de Projetos -->
+            <div class="project-filters reveal">
+                <button class="filter-btn active" data-filter="all">Todos <span class="filter-count">0</span></button>
+                <button class="filter-btn" data-filter="apps-reais">Apps Reais <span class="filter-count">0</span></button>
+                <button class="filter-btn" data-filter="apps-training">Apps Training <span class="filter-count">0</span></button>
+                <button class="filter-btn" data-filter="game-others">Games/Others <span class="filter-count">0</span></button>
+            </div>
+
+            <div class="project-gallery">
+                
+                <!-- Projeto 1 -->
+                <article class="project-card reveal" data-category="apps-reais">
+                    <div class="project-image">
+                        <img src="./assets/img/alg.png" alt="Preview do Projeto 1 (AlgDivulga+)">
+                    </div>
+                    <div class="project-content">
+                        <h3>ALGdivulga+</h3>
+                        <p>Site criado para ofereçer serviços de design e social media para uma conta do insta @alg.divulga.</p>
+                        <div class="project-tags">
+                            <span>HTML5</span>
+                            <span>CSS3</span>
+                            <span>JavaScript</span>
+                            <span>Git</span>
+                            <span>GitHub</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/GusLight0/algdivulga" target="_blank" class="btn-project outline">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                                Código
+                            </a>
+                            <a href="https://algdivulga.netlify.app/" target="_blank" class="btn-project primary">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                                Ver Online
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Projeto 2 -->
+                <article class="project-card reveal" data-category="apps-training">
+                    <div class="project-image">
+                        <img src="https://via.placeholder.com/400x250/071312/00ff8a?text=Projeto+2" alt="Preview do Projeto 2">
+                    </div>
+                    <div class="project-content">
+                        <h3>Nome do Projeto 2</h3>
+                        <p>Criação de um aplicativo web para gerenciamento de tarefas com foco em usabilidade e design minimalista.</p>
+                        <div class="project-tags">
+                            <span>Vue.js</span>
+                            <span>Firebase</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" target="_blank" class="btn-project outline">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                                Código
+                            </a>
+                            <a href="#" target="_blank" class="btn-project primary">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                                Ver Online
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="project-card reveal" data-category="game-others">
+                    <div class="project-image">
+                        <img src="https://via.placeholder.com/400x250/071312/00ff8a?text=Projeto+2" alt="Preview do Projeto 2">
+                    </div>
+                    <div class="project-content">
+                        <h3>Nome do Projeto 2</h3>
+                        <p>Criação de um aplicativo web para gerenciamento de tarefas com foco em usabilidade e design minimalista.</p>
+                        <div class="project-tags">
+                            <span>Vue.js</span>
+                            <span>Firebase</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" target="_blank" class="btn-project outline">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                                Código
+                            </a>
+                            <a href="#" target="_blank" class="btn-project primary">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                                Ver Online
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SEÇÃO 3.5: CERTIFICADOS -->
+    <section id="certificates">
+        <div class="container">
+            <h2 class="reveal">Certificações</h2>
+            <div class="certificates-list">
+                
+                <!-- Certificado 1 -->
+                <div class="certificate-card reveal">
+                    <div class="cert-header">
+                        <h3>Escola do Trabalhador 4.0</h3>
+                        <span class="cert-date">Concluído em: jan 2025</span>
+                    </div>
+                    <p>Escrevendo o primeiro código C#.</p>
+                </div>
+
+                <!-- Certificado 2 -->
+                <div class="certificate-card reveal">
+                    <div class="cert-header">
+                        <h3>Fundação Bradesco</h3>
+                        <span class="cert-date">Concluído em: jan 2025</span>
+                    </div>
+                    <p>Fundamentos do Design Gráfico.</p>
+                </div>
+
+                <!-- Certificado 3 -->
+                <div class="certificate-card reveal">
+                    <div class="cert-header">
+                        <h3>Fundação Bradesco</h3>
+                        <span class="cert-date">Concluído em: fev 2025</span>
+                    </div>
+                    <p>Escrevendo o primeiro código C#.</p>
+                </div>
+
+                <div class="certificate-card reveal">
+                    <div class="cert-header">
+                        <h3>Rockeatseat</h3>
+                        <span class="cert-date">Concluído em: jun 2025</span>
+                    </div>
+                    <p>especialização/formação em Discover</p>
+                </div>
+
+                <div class="certificate-card reveal">
+                    <div class="cert-header">
+                        <h3>Rockeatseat</h3>
+                        <span class="cert-date">Concluído em: jul 2025</span>
+                    </div>
+                    <p>Fundamentos da programação Web, estruturação de páginas com HTML, estilização de páginas com CSS, conceitos essenciais da internet, primeiros passos com JavaScript, lógica de programação, introdução prática à Inteligência Artificial, LLMs (Large Language Models), agentes de IA, técnicas de engenharia de prompt e o uso de ferramentas como Gemini.</p>
+                </div>
+
+                <div class="certificate-card reveal">
+                    <div class="cert-header">
+                        <h3>DevClub</h3>
+                        <span class="cert-date">Concluído em: ago 2025</span>
+                    </div>
+                    <p>HTML.</p>
+                </div>
+
+                <div class="certificate-card reveal">
+                    <div class="cert-header">
+                        <h3>DevClub</h3>
+                        <span class="cert-date">Concluído em: set 2025</span>
+                    </div>
+                    <p>CSS.</p>
+                </div>
+
+                <div class="certificate-card reveal">
+                    <div class="cert-header">
+                        <h3>DevClub</h3>
+                        <span class="cert-date">Concluído em: dez 2025</span>
+                    </div>
+                    <p>Git e GitHub.</p>
+                </div>
+
+                <div class="certificate-card reveal">
+                    <div class="cert-header">
+                        <h3>Studio Games pro education</h3>
+                        <span class="cert-date">Concluído em: ago 2024</span>
+                    </div>
+                    <p>curso de programação, design gráfico trabalhando com adobe Photoshop, e criação de jogos.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SEÇÃO 4: CONTATO -->
+    <section id="contact">
+        <div class="container">
+            <h2 class="reveal">Vamos conversar?</h2>
+            <p>Estou disponível para novos projetos. Envie uma mensagem para discutirmos sua ideia.</p>
+
+            <div class="contact-container">
+                <!-- Formulário em um painel -->
+                <div class="contact-panel reveal">
+                    <form action="https://formspree.io/f/xnjbwenn" method="POST" id="contact-form">
+                        <input type="text" id="name" name="name" required placeholder="Seu nome">
+                        <input type="email" id="email" name="email" required placeholder="seu@email.com">
+                        <textarea id="message" name="message" rows="5" required placeholder="Como posso te ajudar?"></textarea>
+                        <button type="submit" class="btn primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                            Enviar Mensagem
+                        </button>
+                        <p id="form-status" class="form-status"></p>
+                    </form>
+                </div>
+
+                <!-- Informações em outro painel -->
+                <div class="contact-panel reveal">
+                    <ul class="contact-info">
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                            <a href="mailto:gustavosdabreyu@gmail.com">gustavosdabreyu@gmail.com</a>
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                            <a href="https://www.linkedin.com/in/gussoaresdev" target="_blank">LinkedIn</a>
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                            <a href="https://github.com/GusLight0" target="_blank">GitHub</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    </main>
+
+    <!-- RODAPÉ -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Gustavo. Todos os direitos reservados.</p>
+            <a href="https://www.linkedin.com/in/gussoaresdev" target="_blank">LinkedIn</a>
+            <a href="https://github.com/GusLight0" target="_blank">GitHub</a>
+        </div>
+    </footer>
+
+    <!-- Script Principal -->
+    <script src="./script.js"></script>
+</body>
+</html>
