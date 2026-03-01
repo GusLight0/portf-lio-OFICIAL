@@ -1050,7 +1050,7 @@ section {
     gap: 2rem;
     margin-top: 2rem;
     align-items: start;
-    justify-items: center; /* Centraliza os cards na grade */
+    justify-items: start; /* Alinha os cards à esquerda */
 }
 
 @media (max-width: 600px) {
@@ -1116,6 +1116,8 @@ section {
 .project-image {
     position: relative;
     overflow: hidden;
+    aspect-ratio: 16/9;
+    width: 100%;
 }
 
 .project-image::after {
@@ -1133,14 +1135,19 @@ section {
 
 .project-image img {
     width: 100%;
-    aspect-ratio: 16/9;
+    height: 115%; /* Aumentado para permitir o movimento parallax */
+    position: absolute;
+    top: -7.5%; /* Centraliza o excesso de altura */
+    left: 0;
     object-fit: cover;
     display: block;
-    transition: transform .4s, filter .4s;
+    transition: filter .4s; /* Removido transform da transição para não conflitar com o JS */
+    transform: translateY(var(--parallax-y, 0)) scale(var(--hover-scale, 1));
+    will-change: transform;
 }
 
 .project-card:hover .project-image img {
-    transform: scale(1.05);
+    --hover-scale: 1.05; /* Controla o zoom via variável */
     filter: brightness(1.1);
 }
 

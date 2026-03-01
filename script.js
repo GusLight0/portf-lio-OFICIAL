@@ -7,8 +7,28 @@ const lenis = new Lenis({
     smooth: true
 });
 
+// Seleciona as imagens para o parallax
+const parallaxImages = document.querySelectorAll('.project-image img');
+
 function raf(time) {
     lenis.raf(time);
+    
+    // Lógica do Parallax
+    if (parallaxImages.length > 0) {
+        const windowHeight = window.innerHeight;
+        parallaxImages.forEach(img => {
+            const rect = img.parentElement.getBoundingClientRect();
+            // Verifica se a imagem está visível na tela
+            if (rect.top < windowHeight && rect.bottom > 0) {
+                // Calcula a posição relativa (-1 a 1)
+                const speed = 20; // Intensidade do efeito (pixels)
+                const progress = (rect.top + rect.height / 2) / windowHeight - 0.5;
+                const y = progress * speed;
+                img.style.setProperty('--parallax-y', `${y}px`);
+            }
+        });
+    }
+
     requestAnimationFrame(raf);
 }
 requestAnimationFrame(raf);
@@ -480,5 +500,19 @@ if (whatsappBtn && whatsappSound) {
         whatsappSound.currentTime = 0;
         whatsappSound.volume = 0.4; // Volume agradável
         whatsappSound.play().catch(error => console.log("Interação necessária para tocar áudio:", error));
+    });
+}
+
+// --- SOM DE HOVER NOS PROJETOS ---
+const techHoverSound = document.getElementById('tech-hover-sound');
+const projectCardsSound = document.querySelectorAll('.project-card');
+
+if (techHoverSound && projectCardsSound.length > 0) {
+    projectCardsSound.forEach(card => {
+        card.addEventListener('mouseenter', () => {
+            techHoverSound.currentTime = 0;
+            techHoverSound.volume = 0.1; // Volume bem sutil (10%)
+            techHoverSound.play().catch(() => {}); // Ignora erros de autoplay
+        });
     });
 }
