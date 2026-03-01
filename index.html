@@ -13,6 +13,18 @@
 </head>
 <body>
     
+    <!-- PRELOADER (TELA DE CARREGAMENTO) -->
+    <div id="preloader">
+        <div class="loader-content">
+            <span class="loader-text">GUSTAVO <strong style="color: var(--green-neon);">DEV</strong></span>
+            <div class="loader-bar"></div>
+        </div>
+    </div>
+
+    <!-- CURSOR PERSONALIZADO -->
+    <div class="cursor-dot" data-cursor-dot></div>
+    <div class="cursor-outline" data-cursor-outline></div>
+
     <!-- MENU DE NAVEGAÇÃO FIXO -->
     <header class="site-header">
         <div class="header-inner">
@@ -70,7 +82,7 @@
                         <span id="typewriter-text"></span><span class="typewriter-cursor">|</span>
                     </h1>
                     <p class="hero-lead">
-                        Sou estudande de programação e desenvolvimento web com apenas 16 anos já entendo muito de linguagem de programção.
+                        Sou estudante de programação e desenvolvimento web. Com apenas 16 anos, já domino diversas linguagens e foco em criar experiências digitais únicas.
                     </p>
                     <div class="ctas">
                         <a class="btn primary" href="#projects">Ver projetos</a>
@@ -89,7 +101,7 @@
                 <div class="about-panel about-text reveal"> <!-- Panel 1: Text -->
                     <h3 class="panel-title">Minha História</h3>
                     <p>
-                        Com 16 anos de idade já desenvolvi muito conhecimento na área de programação, desde os 10 anos eu vou aprendendo e cursando aulas de programação e criação de jogos, sempre fui apaixonado por essa parte de tecnológia que sempre foi meu forte, meu forte sempre foi matemática, lógica, resolução de problemas e procura de soluções, eu gosto bastante de desafios, e nunca consigo deixar um incompleto, eu aprendo com meus erros e tento melhorar com eles, eu planejo pro meu futuro, terminar meu curso Full-Stack até os 18 anos e ir para a faculdade de Engenharia da Computação, e conseguir um emprego bem remunerado e que seja flexível, isso é o que eu quero pro meu futuro.
+                        Com 16 anos, já acumulei uma vasta bagagem na programação. Desde os 10 anos, venho estudando desenvolvimento e criação de jogos, movido pela paixão por tecnologia. Minha base sólida em matemática e lógica me impulsiona na resolução de problemas complexos. Sou movido a desafios e não descanso até encontrar a solução ideal. Meu objetivo é concluir minha formação Full-Stack até os 18 anos, cursar Engenharia da Computação e construir uma carreira sólida e flexível no mercado global.
                     </p>
                     <a class="btn primary" href="./assets/curriculo/curriculo.pdf" download>
                         <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
@@ -164,7 +176,7 @@
                     </div>
                     <div class="project-content">
                         <h3>ALGdivulga+</h3>
-                        <p>Site criado para ofereçer serviços de design e social media para uma conta do insta @alg.divulga.</p>
+                        <p>Site criado para oferecer serviços de design e social media para uma conta do insta @alg.divulga.</p>
                         <div class="project-tags">
                             <span>HTML5</span>
                             <span>CSS3</span>
@@ -282,7 +294,7 @@
 
                     <div class="certificate-card reveal">
                         <div class="cert-header">
-                            <h3>Rockeatseat</h3>
+                            <h3>Rocketseat</h3>
                             <span class="cert-date">Concluído em: jun 2025</span>
                         </div>
                         <p>especialização/formação em Discover</p>
@@ -290,7 +302,7 @@
 
                     <div class="certificate-card reveal">
                         <div class="cert-header">
-                            <h3>Rockeatseat</h3>
+                            <h3>Rocketseat</h3>
                             <span class="cert-date">Concluído em: jul 2025</span>
                         </div>
                         <p>Fundamentos da programação Web, estruturação de páginas com HTML, estilização de páginas com CSS, conceitos essenciais da internet, primeiros passos com JavaScript, lógica de programação, introdução prática à Inteligência Artificial, LLMs (Large Language Models), agentes de IA, técnicas de engenharia de prompt e o uso de ferramentas como Gemini.</p>
@@ -407,6 +419,20 @@
             </div>
         </div>
     </footer>
+
+    <!-- Botão Flutuante WhatsApp -->
+    <a href="https://wa.me/5598991856123" target="_blank" class="whatsapp-btn" aria-label="Conversar no WhatsApp">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.017-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+    </a>
+
+    <!-- Som de Pop para o botão WhatsApp -->
+    <audio id="whatsapp-pop" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" preload="auto"></audio>
+
+    <!-- Efeito de Confete (Canvas Confetti) -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+    <!-- Lenis Scroll (Rolagem Suave Premium) -->
+    <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script> 
 
     <!-- Script Principal -->
     <script src="./script.js"></script>

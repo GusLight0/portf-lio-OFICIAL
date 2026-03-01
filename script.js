@@ -1,3 +1,87 @@
+// --- LENIS SCROLL (Suavidade Premium) ---
+// Inicializa a rolagem com inércia
+const lenis = new Lenis({
+    duration: 1.2, // Duração da inércia (quanto maior, mais "pesado" e suave)
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Curva exponencial suave
+    direction: 'vertical',
+    smooth: true
+});
+
+function raf(time) {
+    lenis.raf(time);
+    requestAnimationFrame(raf);
+}
+requestAnimationFrame(raf);
+
+// --- PRELOADER ---
+window.addEventListener("load", () => {
+    const preloader = document.getElementById("preloader");
+    const body = document.body;
+
+    // Garante que o preloader fique visível por pelo menos um tempinho para o efeito "premium"
+    setTimeout(() => {
+        preloader.classList.add("hide");
+        body.classList.add("loaded"); // Libera o scroll
+        
+        // Inicia as animações de reveal apenas depois do carregamento
+        setTimeout(() => {
+            // Dispara o observer de reveal manualmente se necessário ou deixa o scroll fazer
+        }, 500);
+    }, 2000); // Tempo ajustado para 2s (equilíbrio ideal entre estética e UX)
+});
+
+// --- CURSOR PERSONALIZADO ---
+const cursorDot = document.querySelector("[data-cursor-dot]");
+const cursorOutline = document.querySelector("[data-cursor-outline]");
+
+// Verifica se os elementos existem (para evitar erros)
+if (cursorDot && cursorOutline) {
+    window.addEventListener("mousemove", function (e) {
+        const posX = e.clientX;
+        const posY = e.clientY;
+
+        // Atualiza variáveis CSS para o efeito de Spotlight no fundo
+        document.body.style.setProperty('--mouse-x', `${posX}px`);
+        document.body.style.setProperty('--mouse-y', `${posY}px`);
+
+        // Ponto segue instantaneamente
+        cursorDot.style.left = `${posX}px`;
+        cursorDot.style.top = `${posY}px`;
+
+        // Anel segue com uma animação suave (usando animate do JS para performance)
+        cursorOutline.animate({
+            left: `${posX}px`,
+            top: `${posY}px`
+        }, { duration: 500, fill: "forwards" });
+    });
+
+    // Efeito de Hover em elementos interativos
+    const interactiveElements = document.querySelectorAll("a, button, .project-card, input, textarea, .filter-btn");
+    
+    interactiveElements.forEach(el => {
+        el.addEventListener("mouseenter", () => {
+            document.body.classList.add("hovering");
+            // Opcional: aumentar levemente o ponto
+            cursorDot.style.transform = "translate(-50%, -50%) scale(1.5)";
+        });
+        
+        el.addEventListener("mouseleave", () => {
+            document.body.classList.remove("hovering");
+            cursorDot.style.transform = "translate(-50%, -50%) scale(1)";
+        });
+    });
+    
+    // Esconde o cursor quando sai da janela
+    document.addEventListener("mouseout", () => {
+        cursorDot.style.opacity = "0";
+        cursorOutline.style.opacity = "0";
+    });
+    document.addEventListener("mouseover", () => {
+        cursorDot.style.opacity = "1";
+        cursorOutline.style.opacity = "1";
+    });
+}
+
 // Menu Mobile
 const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
 const nav = document.querySelector('.nav');
@@ -17,7 +101,18 @@ if (mobileMenuBtn && nav) {
             mobileMenuBtn.classList.remove('active');
             nav.classList.remove('active');
             document.body.style.overflow = 'auto';
+            // Lenis precisa saber que voltamos a rolar
+            lenis.start();
         });
+    });
+    
+    // Pausa o Lenis quando o menu mobile abre para evitar rolagem de fundo
+    mobileMenuBtn.addEventListener('click', () => {
+        if (nav.classList.contains('active')) {
+            lenis.stop();
+        } else {
+            lenis.start();
+        }
     });
 }
 
@@ -42,6 +137,7 @@ revealElements.forEach(el => revealObserver.observe(el));
 // Filtro de Projetos
 const filterBtns = document.querySelectorAll('.filter-btn');
 const projectCards = document.querySelectorAll('.project-card');
+let filterTimeout; // Variável para controlar cliques rápidos e evitar bugs visuais
 
 if (filterBtns.length > 0 && projectCards.length > 0) {
     filterBtns.forEach(btn => {
@@ -55,6 +151,9 @@ if (filterBtns.length > 0 && projectCards.length > 0) {
             btn.classList.add('active');
             btn.setAttribute('aria-pressed', 'true');
 
+            // Se houver uma animação de filtro rodando, cancela ela para reiniciar
+            if (filterTimeout) clearTimeout(filterTimeout);
+
             // ensure the clicked button is visible on small screens
             btn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
 
@@ -66,18 +165,23 @@ if (filterBtns.length > 0 && projectCards.length > 0) {
                 card.classList.add('anim-out');
             });
 
-            // 2. Aguarda o tempo da transição (300ms) para reorganizar o layout
-            setTimeout(() => {
+            // 2. Aguarda o tempo da transição (600ms) para reorganizar o layout
+            filterTimeout = setTimeout(() => {
+                let delay = 0; // Variável para controlar o atraso sequencial (efeito shuffle)
                 projectCards.forEach(card => {
                     if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
                         card.classList.remove('hide');
-                        // Pequeno delay para garantir que o navegador processe a remoção do hide antes do fade-in
-                        setTimeout(() => card.classList.remove('anim-out'), 50);
+                        
+                        // Remove a classe de animação com um atraso crescente para cada card
+                        setTimeout(() => {
+                            card.classList.remove('anim-out');
+                        }, delay);
+                        delay += 100; // Adiciona 100ms de atraso para o próximo card
                     } else {
                         card.classList.add('hide');
                     }
                 });
-            }, 300);
+            }, 600); // Tempo ajustado para igualar a transição do CSS (0.6s)
         });
     });
 
@@ -143,6 +247,16 @@ if (contactForm) {
                 formStatus.textContent = "Mensagem enviada com sucesso! Entrarei em contato em breve.";
                 formStatus.className = "form-status success";
                 contactForm.reset(); // Limpa o formulário
+
+                // Dispara o efeito de confete (Celebração)
+                if (typeof confetti === 'function') {
+                    confetti({
+                        particleCount: 150,
+                        spread: 70,
+                        origin: { y: 0.6 },
+                        colors: ['#00ff8a', '#00c07a', '#ffffff'] // Cores do tema (Neon, Mid Green, White)
+                    });
+                }
             } else {
                 formStatus.textContent = "Ocorreu um erro ao enviar. Tente novamente.";
                 formStatus.className = "form-status error";
@@ -354,4 +468,17 @@ if (carouselWrapper) {
         // initial setup
         updateCarouselButtons();
     }
+}
+
+// --- SOM DO WHATSAPP ---
+const whatsappBtn = document.querySelector('.whatsapp-btn');
+const whatsappSound = document.getElementById('whatsapp-pop');
+
+if (whatsappBtn && whatsappSound) {
+    whatsappBtn.addEventListener('mouseenter', () => {
+        // Reinicia o áudio para tocar sempre que passar o mouse, mesmo se já estiver tocando
+        whatsappSound.currentTime = 0;
+        whatsappSound.volume = 0.4; // Volume agradável
+        whatsappSound.play().catch(error => console.log("Interação necessária para tocar áudio:", error));
+    });
 }

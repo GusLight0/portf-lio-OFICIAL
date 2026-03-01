@@ -10,7 +10,12 @@
 html,
 body {
     height: 100%;
-    scroll-behavior: smooth; /* Rolagem suave ao clicar nos links do menu */
+    /* scroll-behavior: smooth; REMOVIDO: O Lenis controla isso agora para ser mais fluido */
+    cursor: none; /* Esconde o cursor padrão para usar o personalizado */
+}
+
+html.lenis, html.lenis body {
+    height: auto;
 }
 
 /* Variáveis */
@@ -25,7 +30,7 @@ body {
     --glass: rgba(255, 255, 255, 0.02);
     --glass-2: rgba(255, 255, 255, 0.01);
     --card-border: rgba(0, 255, 138, 0.06);
-    --shadow-neon: rgba(0, 255, 138, 0.08);
+    --shadow-neon: rgba(0, 255, 138, 0.04); /* Reduzido pela metade para ser mais minimalista */
     --fw-regular: 400;
     --gemini-blue: #4285F4;
     --gemini-purple: #8952ff;
@@ -46,25 +51,180 @@ img {
 
 /* Base */
 body {
-    background: radial-gradient(circle at 10% 10%, rgba(0, 255, 138, 0.03), transparent 5%),
-        linear-gradient(180deg, #101616 0%, var(--bg-2) 100%);
+    background-color: var(--bg);
     color: var(--text);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     line-height: 1.45;
     overflow-x: hidden;
+    position: relative;
+    /* Garante que o site não role enquanto carrega */
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Fundo Unificado Futurista (Grid + Glow) */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    /* Grid Minimalista */
+    background-image: 
+        linear-gradient(rgba(0, 255, 138, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 138, 0.03) 1px, transparent 1px),
+        /* Glow Dinâmico (Spotlight) que segue o mouse + Glows fixos */
+        radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(0, 255, 138, 0.08) 0%, transparent 20%),
+        radial-gradient(circle at 85% 30%, rgba(0, 192, 122, 0.03), transparent 30%);
+    background-size: 50px 50px, 50px 50px, 100% 100%, 100% 100%;
+    background-position: center top;
+    /* animation: bgPulse 10s ease-in-out infinite alternate; Removido para focar na interatividade do mouse */
+    transition: background-position 0.1s; /* Suaviza levemente o movimento do gradiente */
+}
+
+@keyframes bgPulse {
+    0% { opacity: 0.8; background-size: 50px 50px, 50px 50px, 100% 100%, 100% 100%; }
+    100% { opacity: 1; background-size: 50px 50px, 50px 50px, 110% 110%, 120% 120%; }
+}
+
+/* Efeito de Ruído (Noise) - Sem Scanline */
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 110; /* Acima do conteúdo, abaixo do header */
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E"); /* Noise SVG leve */
+    background-size: 150px 150px;
+    background-repeat: repeat;
+}
+
+/* Classe adicionada via JS após o carregamento para liberar a rolagem */
+body.loaded {
+    height: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 /* Animação de Scroll Reveal */
 .reveal {
     opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+    transform: translateY(40px);
+    /* Curva Bezier "Apple-like" (começa rápido, termina suave) */
+    transition: all 1s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .reveal.active {
     opacity: 1;
     transform: translateY(0);
+}
+
+/* --- PRELOADER --- */
+#preloader {
+    position: fixed;
+    inset: 0;
+    background-color: var(--bg);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+#preloader.hide {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.loader-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.loader-text {
+    font-size: 1.5rem;
+    font-weight: 900;
+    letter-spacing: 0.2em;
+    color: var(--text);
+    animation: pulseText 2s infinite;
+}
+
+.loader-bar {
+    width: 150px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+    border-radius: 2px;
+}
+
+.loader-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 50%;
+    background: var(--green-neon);
+    animation: loadingBar 4s ease-in-out infinite;
+}
+
+@keyframes loadingBar {
+    0% { left: -50%; }
+    100% { left: 100%; }
+}
+
+@keyframes pulseText {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* --- CURSOR PERSONALIZADO --- */
+.cursor-dot,
+.cursor-outline {
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    z-index: 9999;
+    pointer-events: none;
+    display: none; /* Escondido por padrão (mobile) */
+}
+
+/* Mostra apenas em dispositivos que têm mouse (desktop) */
+@media (pointer: fine) {
+    .cursor-dot {
+        display: block;
+        width: 8px;
+        height: 8px;
+        background-color: var(--green-neon);
+    }
+
+    .cursor-outline {
+        display: block;
+        width: 40px;
+        height: 40px;
+        border: 1px solid rgba(0, 255, 138, 0.5);
+        transition: width 0.2s, height 0.2s, background-color 0.2s;
+    }
+
+    /* Estado Hover do Cursor (quando passa em links) */
+    body.hovering .cursor-outline {
+        width: 60px;
+        height: 60px;
+        background-color: rgba(0, 255, 138, 0.05);
+        border-color: var(--green-neon);
+        backdrop-filter: blur(2px);
+    }
+    
+    /* Esconde o cursor padrão em tudo */
+    * {
+        cursor: none !important;
+    }
 }
 
 /* Personalização da Barra de Rolagem (Scrollbar) */
@@ -210,27 +370,7 @@ main {
     justify-content: center;
     padding: 5rem 2rem;
     overflow: hidden;
-    background-image:
-        radial-gradient(circle at 8% 18%, rgba(0, 255, 138, 0.06), transparent 12%),
-        radial-gradient(circle at 86% 78%, rgba(0, 192, 122, 0.04), transparent 18%),
-        repeating-linear-gradient(0deg, rgba(0, 255, 138, 0.035) 0 1px, transparent 1px 56px),
-        repeating-linear-gradient(90deg, rgba(0, 192, 122, 0.02) 0 1px, transparent 1px 56px);
-    background-blend-mode: screen, screen, normal, normal;
-    animation: gridShift 36s linear infinite;
-}
-
-@keyframes gridShift {
-    0% {
-        background-position: 0 0, 0 0, 0 0, 0 0
-    }
-
-    50% {
-        background-position: -180px -120px, 160px 140px, 36px 36px, -36px -36px
-    }
-
-    100% {
-        background-position: 0 0, 0 0, 0 0, 0 0
-    }
+    /* Fundo removido para usar o global */
 }
 
 @keyframes rotate-gradient {
@@ -325,7 +465,7 @@ main {
 
 .hero-card:hover {
     transform: translateY(-6px);
-    box-shadow: 0 20px 50px rgba(0, 255, 138, 0.18);
+    box-shadow: 0 15px 40px rgba(0, 255, 138, 0.05); /* Sombra muito mais suave */
 }
 
 /* neon glow atrás do cartão */
@@ -541,7 +681,7 @@ main {
 
 .btn.primary:hover {
     transform: translateY(-4px);
-    box-shadow: 0 24px 48px rgba(0, 255, 138, 0.14)
+    box-shadow: 0 15px 30px rgba(0, 255, 138, 0.08)
 }
 
 .btn.outline {
@@ -592,16 +732,6 @@ section {
 #about {
     position: relative;
     overflow: hidden; /* Garante que os brilhos não vazem */
-}
-
-/* Brilho de fundo para a seção sobre */
-#about::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background: radial-gradient(circle at 80% 20%, rgba(0, 255, 138, 0.05), transparent 35%),
-                radial-gradient(circle at 20% 90%, rgba(0, 192, 122, 0.04), transparent 40%);
 }
 
 /* Garante que o conteúdo fique acima das partículas no Sobre */
@@ -717,11 +847,7 @@ section {
 
 /* Estilos para a seção SERVIÇOS */
 #services {
-    background-color: var(--bg-2);
-    background-image: 
-        linear-gradient(rgba(0, 255, 138, 0.02) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 255, 138, 0.02) 1px, transparent 1px);
-    background-size: 50px 50px;
+    /* Fundo removido para usar o global */
 }
 
 .services-grid {
@@ -751,8 +877,6 @@ section {
 
 /* Estilos para a seção PROJETOS */
 #projects {
-    background-color: var(--bg-2); /* Alterado de --bg para --bg-2 para igualar aos outros */
-    background-image: radial-gradient(circle at 50% 20%, rgba(0, 192, 122, 0.03), transparent 60%);
     position: relative;
     overflow: hidden;
 }
@@ -807,6 +931,8 @@ section {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    position: relative;
+    z-index: 10; /* Garante que o filtro fique acima de tudo */
     margin-bottom: 1rem;
 }
 
@@ -846,10 +972,14 @@ section {
     .project-controls .project-filters {
         max-height: 0;
         padding: 0;
+        overflow: hidden; /* Essencial para esconder os botões quando fechado */
+        opacity: 0;
+        transition: max-height 0.4s ease, opacity 0.3s ease, padding 0.4s ease;
     }
     .project-controls.filters-open .project-filters {
         max-height: 200px;
         padding-bottom: 0.5rem;
+        opacity: 1;
     }
 }
 @media (min-width: 721px) {
@@ -915,9 +1045,12 @@ section {
 .project-gallery {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* cards podem encolher até 200px para telas super pequenas */
+    /* Aumentei o minmax para 300px para evitar cards muito finos e adicionei justify-content */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
     margin-top: 2rem;
     align-items: start;
+    justify-items: center; /* Centraliza os cards na grade */
 }
 
 @media (max-width: 600px) {
@@ -933,8 +1066,11 @@ section {
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    transition: all 0.3s ease;
+    transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); /* Efeito elástico (Pop) */
     position: relative;
+    /* Limita a largura para não esticar na tela toda ao filtrar */
+    width: 100%;
+    max-width: 450px;
 }
 
 /* Classe para ocultar projetos filtrados */
@@ -945,14 +1081,14 @@ section {
 /* Classe para animação de saída (fade-out) */
 .project-card.anim-out {
     opacity: 0;
-    transform: scale(0.95);
+    transform: scale(0.8) translateY(20px); /* Diminui e desce levemente */
     pointer-events: none;
 }
 
 .project-card:hover {
     transform: translateY(-5px);
     background: var(--glass);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1), 0 4px 15px var(--shadow-neon);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1), 0 4px 15px rgba(0, 255, 138, 0.03);
 }
 
 /* Efeito de borda brilhante no hover */
@@ -1093,16 +1229,12 @@ section {
     background: linear-gradient(90deg, var(--green-mid), var(--green-neon));
     border-color: var(--green-neon);
     color: var(--bg);
-    box-shadow: 0 4px 15px var(--shadow-neon);
+    box-shadow: 0 4px 15px rgba(0, 255, 138, 0.1);
     transform: translateY(-2px);
 }
 
 /* Estilos para a seção CERTIFICADOS */
 #certificates {
-    background-color: var(--bg-2);
-    /* Padrão sutil de linhas diagonais */
-    background-image: repeating-linear-gradient(45deg, rgba(0, 255, 138, 0.01) 0, rgba(0, 255, 138, 0.01) 1px, transparent 0, transparent 50%);
-    background-size: 10px 10px;
 }
 
 .carousel-wrapper {
@@ -1147,7 +1279,7 @@ section {
 .certificate-card:hover {
     transform: translateY(-5px);
     /* Sombra mais sutil e alinhada com a paleta de cores */
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15), 0 0 15px var(--shadow-neon);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15), 0 0 10px rgba(0, 255, 138, 0.03);
 }
 
 .certificate-card:hover::before {
@@ -1181,9 +1313,6 @@ section {
 
 /* Estilos para a seção CONTATO */
 #contact {
-    background: 
-        radial-gradient(circle at 50% 100%, rgba(0, 255, 138, 0.04), transparent 40%),
-        linear-gradient(180deg, var(--bg-2) 0%, #040d0b 100%);
     position: relative;
     overflow: hidden;
 }
@@ -1268,8 +1397,44 @@ section {
 }
 #contact .btn.primary:hover {
     background-position: 0 0; /* Move o gradiente para a esquerda, revelando o verde claro */
-    box-shadow: 0 0 20px rgba(0, 255, 138, 0.2);
+    box-shadow: 0 0 15px rgba(0, 255, 138, 0.08);
     border-color: var(--green-mid);
+}
+
+/* Botão Flutuante WhatsApp */
+.whatsapp-btn {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 115; /* Acima do ruído e abaixo do header/menu */
+    background: #25D366; /* Verde oficial do WhatsApp */
+    color: #fff;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(37, 211, 102, 0.3);
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s;
+    animation: pulse-whatsapp 3s infinite;
+}
+
+.whatsapp-btn:hover {
+    transform: scale(1.1) translateY(-5px);
+    box-shadow: 0 10px 30px rgba(37, 211, 102, 0.5);
+}
+
+.whatsapp-btn svg {
+    width: 32px;
+    height: 32px;
+    fill: currentColor;
+}
+
+@keyframes pulse-whatsapp {
+    0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+    70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
 }
 
 /* Lista de informações de contato com ícones */
@@ -1372,7 +1537,7 @@ a:hover {
 footer {
     padding: 3rem 1rem 2rem;
     border-top: 1px solid rgba(0, 255, 138, 0.1);
-    background: var(--bg-2);
+    background: rgba(5, 7, 6, 0.8); /* Leve transparência para mesclar com o fundo global */
     position: relative;
     overflow: hidden;
 }
@@ -1388,18 +1553,6 @@ footer::before {
     height: 1px;
     background: linear-gradient(90deg, transparent, var(--green-neon), transparent);
     opacity: 0.4;
-}
-
-/* Brilho de fundo imersivo */
-footer::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 250px;
-    background: radial-gradient(circle at 50% 100%, rgba(0, 255, 138, 0.07), transparent 70%);
-    pointer-events: none;
 }
 
 footer .container {
@@ -1443,6 +1596,12 @@ footer .container {
     .hero-avatar {
         width: 96px;
         height: 96px
+    }
+    
+    /* Ajuste do botão WhatsApp para tablets/telas médias */
+    .whatsapp-btn {
+        bottom: 1.5rem;
+        right: 1.5rem;
     }
 }
 
@@ -1554,12 +1713,41 @@ footer .container {
         font-size: 0.8rem; /* Ajusta o tamanho da fonte dos botões */
     }
 
-    /* ajustes adicionais para telas muito pequenas */
-    .project-gallery { gap: 0.6rem; }
-    .project-card { min-width: 250px; }
-    .project-content h3 { font-size: 1rem; }
-    .project-content p { font-size: 0.8rem; }
-    .btn-project { padding: 0.3rem 0.6rem; }
+    /* --- REVOLUÇÃO DOS PROJETOS MOBILE (Horizontal Snap) --- */
+    .project-gallery {
+        display: flex; /* Muda de Grid para Flex */
+        grid-template-columns: none;
+        overflow-x: auto; /* Permite rolagem lateral */
+        scroll-snap-type: x mandatory; /* Efeito de imã ao soltar o dedo */
+        gap: 1rem;
+        padding: 1rem 5% 2rem 5%; /* Espaço nas laterais para ver o próximo card */
+        margin: 0 -1.5rem; /* Expande para as bordas da tela */
+        -webkit-overflow-scrolling: touch; /* Rolagem suave no iOS */
+        scrollbar-width: none; /* Esconde barra de rolagem no Firefox */
+    }
+
+    .project-gallery::-webkit-scrollbar {
+        display: none; /* Esconde barra de rolagem no Chrome/Safari */
+    }
+
+    .project-card {
+        flex: 0 0 85vw; /* O card ocupa 85% da largura da tela (Gigante e Legível) */
+        width: 85vw;
+        flex: 0 0 80vw; /* Reduzido levemente para mostrar mais do próximo card */
+        width: 80vw;
+        max-width: 380px; /* Trava o tamanho máximo para não ficar gigante em celulares grandes */
+        min-width: 0; /* Reseta min-width antigo */
+        scroll-snap-align: center; /* Centraliza o card ao parar de rolar */
+        margin-bottom: 0;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2); /* Sombra mais forte para destacar */
+    }
+
+    /* Ajuste da imagem para ficar cinematográfica no mobile */
+    .project-image img {
+        height: 220px;
+        object-fit: cover;
+    }
+    /* ------------------------------------------------------- */
 
     /* Estilos para os botões do carrossel (visíveis apenas no mobile) */
     .carousel-btn {
@@ -1633,7 +1821,7 @@ footer .container {
         .certificate-card p { font-size: 0.7rem; }
         .carousel-btn { width: 32px; height: 32px; }
         /* projetos dentro de 400px */
-        .project-card { min-width: 90%; }
+        /* .project-card { min-width: 90%; } Removido pois o flex: 0 0 85vw já resolve */
         .project-content h3 { font-size: 0.9rem; }
         .project-content p { font-size: 0.7rem; }
         .btn-project { font-size: 0.7rem; padding: 0.3rem 0.5rem; }
@@ -1649,6 +1837,18 @@ footer .container {
         #contact .btn.primary {
             font-size: 0.9rem;
             padding: 0.6rem 1rem;
+        }
+        
+        /* Ajuste final do botão WhatsApp para telas muito pequenas */
+        .whatsapp-btn {
+            width: 50px;
+            height: 50px;
+            bottom: 1rem;
+            right: 1rem;
+        }
+        .whatsapp-btn svg {
+            width: 26px;
+            height: 26px;
         }
     }
     @media (max-width: 350px) {
