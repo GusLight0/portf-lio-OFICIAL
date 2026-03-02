@@ -152,6 +152,37 @@ body.loaded {
     animation: pulseText 2s infinite;
 }
 
+/* Efeito Glitch de Saída do Preloader */
+.loader-text.glitch {
+    position: relative;
+    animation: glitch-skew 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
+    color: var(--text);
+}
+
+.loader-text.glitch::before,
+.loader-text.glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg); /* Fundo para cobrir o texto original durante o glitch */
+    opacity: 0.8;
+}
+
+.loader-text.glitch::before {
+    left: 2px;
+    text-shadow: -2px 0 var(--gemini-purple);
+    animation: glitch-anim-1 0.3s infinite linear alternate-reverse;
+}
+
+.loader-text.glitch::after {
+    left: -2px;
+    text-shadow: 2px 0 var(--green-neon);
+    animation: glitch-anim-2 0.3s infinite linear alternate-reverse;
+}
+
 .loader-bar {
     width: 150px;
     height: 2px;
@@ -182,6 +213,15 @@ body.loaded {
     50% { opacity: 0.5; }
 }
 
+@keyframes glitch-skew {
+    0% { transform: skew(0deg); }
+    20% { transform: skew(-10deg); }
+    40% { transform: skew(10deg); }
+    60% { transform: skew(-5deg); }
+    80% { transform: skew(5deg); }
+    100% { transform: skew(0deg); }
+}
+
 /* --- CURSOR PERSONALIZADO --- */
 .cursor-dot,
 .cursor-outline {
@@ -209,7 +249,7 @@ body.loaded {
         width: 40px;
         height: 40px;
         border: 1px solid rgba(0, 255, 138, 0.5);
-        transition: width 0.2s, height 0.2s, background-color 0.2s;
+    transition: width 0.2s, height 0.2s, background-color 0.2s; /* Mantém transições para hover */
     }
 
     /* Estado Hover do Cursor (quando passa em links) */
@@ -376,6 +416,14 @@ main {
 @keyframes rotate-gradient {
     0% { transform: translate(-50%, -50%) rotate(0deg); }
     100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Partículas Magnéticas (Canvas) */
+#magnetic-particles {
+    position: absolute;
+    inset: 0;
+    z-index: 1; /* Atrás dos ícones flutuantes (2) e do card (3) */
+    pointer-events: none;
 }
 
 /* Ícones Flutuantes na Seção Home */
@@ -891,8 +939,13 @@ section {
 .particles-container {
     position: absolute;
     inset: 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     pointer-events: none;
     z-index: 1;
+    overflow: hidden; /* Garante que a animação fique contida dentro da seção */
 }
 
 /* Estilo da partícula individual */
@@ -929,64 +982,81 @@ section {
 /* Filtros de Projetos */
 .project-controls {
     display: flex;
+    justify-content: flex-start; /* Alinhamento inicial para permitir rolagem correta */
     align-items: center;
-    gap: 0.5rem;
+    gap: 1rem;
     position: relative;
     z-index: 10; /* Garante que o filtro fique acima de tudo */
-    margin-bottom: 1rem;
+    margin-bottom: 2.5rem;
+    
+    /* Estilo "Dock" Apple-like */
+    background: rgba(5, 7, 6, 0.6); /* Fundo um pouco mais escuro para contraste */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 0.6rem 1.2rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    max-width: min(600px, 94%); /* Limita a largura para ficar elegante */
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.3);
 }
 
 .filter-toggle {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    color: var(--text);
+    display: none; /* Removido para design unificado */
+}
+
+/* Ícone do Filtro (Notebook/Desktop) */
+.filter-icon-wrapper {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0.3rem;
-    transition: transform .2s;
-}
-.filter-toggle[aria-expanded="true"] {
-    transform: rotate(90deg);
+    color: var(--green-neon);
+    padding-right: 0.8rem;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    flex-shrink: 0; /* Impede que o ícone seja esmagado */
 }
 
 .project-filters {
     display: flex;
-    justify-content: flex-start;
+    justify-content: flex-start; /* Itens começam da esquerda para rolar */
+    align-items: center;
     overflow-x: auto;
-    gap: 0.8rem;
+    gap: 0.5rem;
     margin-bottom: 0;
-    padding-bottom: 0.5rem;
+    padding-bottom: 0;
     flex-wrap: nowrap;
     scrollbar-width: none; /* Firefox */
-    transition: max-height .4s ease, padding .4s ease;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    mask-image: linear-gradient(90deg, transparent 0%, black 5%, black 95%, transparent 100%); /* Fade nas bordas da rolagem */
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 5%, black 95%, transparent 100%);
 }
 .project-filters::-webkit-scrollbar {
     display: none;
 }
 
-/* collapse em telas pequenas via toggle */
+/* Ajuste Mobile para o Dock de Filtros */
 @media (max-width: 720px) {
-    .filter-toggle { display: flex; }
-    .project-controls .project-filters {
-        max-height: 0;
-        padding: 0;
-        overflow: hidden; /* Essencial para esconder os botões quando fechado */
-        opacity: 0;
-        transition: max-height 0.4s ease, opacity 0.3s ease, padding 0.4s ease;
+    .project-controls {
+        width: 100%;
+        max-width: 100%;
+        border-radius: 16px;
+        justify-content: flex-start;
+        overflow-x: auto;
+        padding: 0.5rem 0.8rem;
+        background: rgba(255, 255, 255, 0.03); /* Fundo mais leve no mobile */
     }
-    .project-controls.filters-open .project-filters {
-        max-height: 200px;
-        padding-bottom: 0.5rem;
-        opacity: 1;
+    
+    .filter-icon-wrapper {
+        display: none; /* Esconde o ícone no mobile para economizar espaço */
     }
-}
-@media (min-width: 721px) {
-    .filter-toggle { display: none; }
-    .project-controls .project-filters {
-        max-height: none!important;
-        padding-bottom: 0.5rem;
+    
+    .project-filters {
+        justify-content: flex-start;
+        width: 100%;
+        mask-image: none; /* Remove o fade no mobile para usar a tela toda */
+        -webkit-mask-image: none;
     }
 }
 
@@ -1007,55 +1077,62 @@ section {
 .filter-btn {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     background: transparent;
-    border: 1px solid var(--card-border);
-    color: var(--text);
-    padding: 0.5rem 1.2rem;
+    border: none;
+    color: rgba(234, 250, 240, 0.6);
+    padding: 0.6rem 1.2rem;
     border-radius: 20px;
     cursor: pointer;
     font-family: inherit;
-    font-weight: 600;
-    font-size: 0.9rem;
-    transition: all 0.3s ease;
+    font-weight: 500;
+    font-size: 0.85rem;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     flex: 0 0 auto;
+    position: relative;
 }
 
 .filter-btn:hover,
 .filter-btn.active {
-    background: var(--green-dark);
-    border-color: var(--green-neon);
-    color: var(--green-neon);
-    box-shadow: 0 0 15px var(--shadow-neon);
+    color: #050706;
+    background: var(--green-neon);
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(0, 255, 138, 0.25);
 }
 
 .filter-count {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.08);
     font-size: 0.75rem;
-    padding: 0.1rem 0.5rem;
+    padding: 0.1rem 0.4rem;
     border-radius: 10px;
     margin-left: 0.5rem;
-    color: var(--green-mid);
+    color: inherit;
+    opacity: 0.7;
+    transition: all 0.2s;
 }
 
 .filter-btn.active .filter-count {
-    background: var(--bg);
-    color: var(--green-neon);
+    background: rgba(0, 0, 0, 0.2);
+    color: #050706;
+    opacity: 1;
 }
 
 .project-gallery {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* cards podem encolher até 200px para telas super pequenas */
-    /* Aumentei o minmax para 300px para evitar cards muito finos e adicionei justify-content */
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    /* Grid responsivo inteligente que centraliza */
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
     gap: 2rem;
     margin-top: 2rem;
     align-items: start;
-    justify-items: start; /* Alinha os cards à esquerda */
+    justify-items: center; /* Centraliza os itens DENTRO das células do grid */
+    justify-content: center;
+    min-height: 400px; /* Evita colapso de altura durante filtro */
 }
 
 @media (max-width: 600px) {
     .project-gallery {
-        gap: 1rem;
+        grid-template-columns: 1fr; /* Coluna única no mobile se não for scroll */
+        gap: 1.5rem;
     }
 }
 
@@ -1066,11 +1143,17 @@ section {
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); /* Efeito elástico (Pop) */
+    /* Transição suave para quando o mouse SAI do card (retorno suave) */
+    transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.4s ease, box-shadow 0.3s ease;
     position: relative;
     /* Limita a largura para não esticar na tela toda ao filtrar */
     width: 100%;
-    max-width: 450px;
+    max-width: 380px; /* TRAVA O TAMANHO MÁXIMO: Isso impede que fiquem gigantes */
+    
+    /* Configuração 3D Apple TV Style */
+    transform-style: preserve-3d;
+    transform: perspective(1000px) rotateX(var(--rotate-x, 0deg)) rotateY(var(--rotate-y, 0deg)) scale3d(1, 1, 1);
+    will-change: transform;
 }
 
 /* Classe para ocultar projetos filtrados */
@@ -1081,14 +1164,20 @@ section {
 /* Classe para animação de saída (fade-out) */
 .project-card.anim-out {
     opacity: 0;
-    transform: scale(0.8) translateY(20px); /* Diminui e desce levemente */
+    transform: scale(0.94);
     pointer-events: none;
 }
 
+/* Quando o JS está controlando o movimento (hover), removemos a transição para ser instantâneo */
+.project-card.is-hovering {
+    transition: none;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 20px rgba(0, 255, 138, 0.1);
+    z-index: 10;
+}
+
 .project-card:hover {
-    transform: translateY(-5px);
+    /* O transform é controlado pelo JS agora, removemos o translateY fixo */
     background: var(--glass);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1), 0 4px 15px rgba(0, 255, 138, 0.03);
 }
 
 /* Efeito de borda brilhante no hover */
@@ -1110,6 +1199,28 @@ section {
 }
 
 .project-card:hover::before {
+    opacity: 1;
+}
+
+/* Efeito de Glare (Brilho Especular) estilo Apple TV */
+.project-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 12px;
+    background: radial-gradient(
+        circle at var(--glare-x, 50%) var(--glare-y, 50%), 
+        rgba(255, 255, 255, 0.15) 0%, 
+        transparent 60%
+    );
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    z-index: 5;
+    mix-blend-mode: overlay;
+}
+
+.project-card:hover::after {
     opacity: 1;
 }
 
@@ -1144,10 +1255,12 @@ section {
     transition: filter .4s; /* Removido transform da transição para não conflitar com o JS */
     transform: translateY(var(--parallax-y, 0)) scale(var(--hover-scale, 1));
     will-change: transform;
+    /* Profundidade 3D para a imagem */
+    transform: translateZ(20px) scale(var(--hover-scale, 1));
 }
 
 .project-card:hover .project-image img {
-    --hover-scale: 1.05; /* Controla o zoom via variável */
+    --hover-scale: 1.1; /* Controla o zoom via variável */
     filter: brightness(1.1);
 }
 
@@ -1156,6 +1269,9 @@ section {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
+    /* Profundidade 3D para o conteúdo */
+    transform: translateZ(30px);
+    background: transparent; /* Garante que não tape o efeito */
 }
 
 .project-content h3 {
@@ -1372,6 +1488,43 @@ section {
     outline: none;
     border-color: var(--green-mid);
     box-shadow: 0 0 12px var(--shadow-neon);
+}
+
+/* Grupo do formulário para avaliação */
+.form-group.rating-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+}
+
+.form-group.rating-group label {
+    color: rgba(234, 250, 240, 0.8);
+    font-weight: 600;
+}
+
+.stars {
+    display: inline-flex;
+    flex-direction: row-reverse; /* Inverte a ordem para o truque de hover funcionar */
+    justify-content: flex-end;
+}
+
+.stars input[type="radio"] {
+    display: none; /* Esconde os inputs de rádio reais */
+}
+
+.stars label {
+    color: rgba(255, 255, 255, 0.2); /* Cor da estrela inativa */
+    font-size: 1.75rem;
+    padding: 0 0.1em;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.stars label:hover,
+.stars label:hover ~ label,
+.stars input[type="radio"]:checked ~ label {
+    color: var(--green-neon);
 }
 
 .contact-panel input::placeholder, .contact-panel textarea::placeholder {
@@ -1663,7 +1816,13 @@ footer .container {
     .hero-left {
         /* No mobile, o hero-left (avatar) se torna um item de grid como os outros */
         flex-direction: column; /* Empilha avatar e skills no mobile */
-        justify-content: center; /* Centraliza o avatar no mobile */
+        justify-content: center; /* Centraliza verticalmente */
+        align-items: center; /* Centraliza horizontalmente o conteúdo empilhado */
+    }
+
+    .hero-avatar {
+        width: 80px;
+        height: 80px;
     }
 
     .hero-mini-skills {
@@ -1696,8 +1855,9 @@ footer .container {
 
     /* Ajustes para a seção de Projetos */
     .filter-btn {
-        padding: 0.4rem 1rem; /* Reduz o padding dos botões de filtro */
-        font-size: 0.85rem;
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+        white-space: nowrap;
     }
 
     .project-image img {
@@ -1724,13 +1884,15 @@ footer .container {
     .project-gallery {
         display: flex; /* Muda de Grid para Flex */
         grid-template-columns: none;
+        min-height: auto; /* CORREÇÃO: Remove altura mínima que deixava buracos */
         overflow-x: auto; /* Permite rolagem lateral */
         scroll-snap-type: x mandatory; /* Efeito de imã ao soltar o dedo */
-        gap: 1rem;
-        padding: 1rem 5% 2rem 5%; /* Espaço nas laterais para ver o próximo card */
-        margin: 0 -1.5rem; /* Expande para as bordas da tela */
+        gap: 1.2rem;
+        padding: 1rem 1.5rem 2rem 1.5rem; /* Padding lateral confortável */
+        margin: 0 -1.5rem; /* Expande para as bordas */
         -webkit-overflow-scrolling: touch; /* Rolagem suave no iOS */
         scrollbar-width: none; /* Esconde barra de rolagem no Firefox */
+        justify-content: flex-start; /* Garante que o scroll comece do início e não corte itens */
     }
 
     .project-gallery::-webkit-scrollbar {
@@ -1738,21 +1900,28 @@ footer .container {
     }
 
     .project-card {
-        flex: 0 0 85vw; /* O card ocupa 85% da largura da tela (Gigante e Legível) */
-        width: 85vw;
-        flex: 0 0 80vw; /* Reduzido levemente para mostrar mais do próximo card */
-        width: 80vw;
-        max-width: 380px; /* Trava o tamanho máximo para não ficar gigante em celulares grandes */
+        flex: 0 0 78vw; /* REDUZIDO: De 85vw para 78vw para ver melhor o próximo card */
+        width: 78vw; 
+        max-width: 340px; /* REDUZIDO: Limite menor para não ficar gigante */
         min-width: 0; /* Reseta min-width antigo */
         scroll-snap-align: center; /* Centraliza o card ao parar de rolar */
         margin-bottom: 0;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.2); /* Sombra mais forte para destacar */
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1); /* Sombra mais leve */
     }
 
     /* Ajuste da imagem para ficar cinematográfica no mobile */
     .project-image img {
-        height: 220px;
+        height: 160px; /* REDUZIDO: Altura menor para caber mais conteúdo na tela */
         object-fit: cover;
+        /* Transição suave para o efeito de foco no scroll */
+        transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1), filter 0.6s ease;
+    }
+
+    /* Estado "Fora de Foco" (Aplicado via JS no scroll) */
+    .project-card.out-of-view .project-image img {
+        opacity: 0.3;
+        transform: scale(0.92);
+        filter: grayscale(0.6) brightness(0.8);
     }
     /* ------------------------------------------------------- */
 
@@ -1882,18 +2051,21 @@ footer .container {
 
     /* Ajustes para o texto do Hero */
     .role {
-        font-size: 0.6rem; /* Reduz o tamanho da fonte do cargo */
+        font-size: 0.75rem; /* Ajuste para leitura confortável */
     }
 
     .hero-name {
-        font-size: clamp( 0.5rem, 10vw, 1.5rem); /* Ajuste fino para títulos não quebrarem */
+        font-size: 1.8rem; /* FIXO: Tamanho controlado, nem gigante nem minúsculo */
+        line-height: 1.1;
+        margin-bottom: 0.5rem;
     }
 
     .hero-lead {
-        max-width: 90%; /* Limita a largura do parágrafo */
+        max-width: 100%; 
         margin-left: auto;
         margin-right: auto;
-        font-size: 0.7rem; /* Reduz um pouco o tamanho da fonte do parágrafo */
+        font-size: 0.9rem; /* Tamanho padrão legível */
+        line-height: 1.4;
     }
 
     .neon-accents,
@@ -1911,6 +2083,16 @@ footer .container {
 
     .brand-accent {
         font-size: 1rem;
+    }
+
+    /* Ajustes finos nos textos dos Projetos para não ficarem enormes */
+    .project-content h3 {
+        font-size: 1.1rem;
+        margin-bottom: 0.3rem;
+    }
+    .project-content p {
+        font-size: 0.85rem;
+        line-height: 1.4;
     }
 }
 

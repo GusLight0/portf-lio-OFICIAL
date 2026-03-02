@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <meta name="theme-color" content="#071028">
     <title>Portfólio Profissional | Dev Gustavo</title>
-    <!-- Favicon SVG: Círculo escuro com "DEV" em verde neon -->
+     <!-- Favicon SVG: Círculo escuro com "DEV" em verde neon -->
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23050706'/%3E%3Ctext x='50' y='65' font-family='sans-serif' font-weight='900' font-size='40' text-anchor='middle' fill='%2300ff8a'%3EDEV%3C/text%3E%3C/svg%3E" type="image/svg+xml">
     <link rel="stylesheet" href="./styles.css">
     <meta name="description" content="Portfólio de Gustavo, Desenvolvedor focado em soluções inovadoras e resultados reais.">
@@ -54,6 +54,7 @@
     <!-- SEÇÃO 1: INÍCIO (HOME/HERO) -->
     <main>
         <section id="home">
+            <canvas id="magnetic-particles"></canvas>
             <div class="floating-icons" aria-hidden="true">
                 <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML5 Icon" class="icon-float" id="icon-html">
                 <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS3 Icon" class="icon-float" id="icon-css">
@@ -154,12 +155,10 @@
             
             <!-- Controles de projetos (ícone + filtros) -->
             <div class="project-controls reveal">
-                <button class="filter-toggle" aria-label="Mostrar filtros" aria-expanded="false">
-                    <!-- simples ícone de filtro -->
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="24" height="24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L15 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 019 21v-7.586L3.293 6.707A1 1 0 013 6V4z"/>
-                    </svg>
-                </button>
+                <div class="filter-icon-wrapper" aria-hidden="true">
+                    <!-- Ícone Profissional de Filtros (Sliders) -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
+                </div>
                 <div class="project-filters">
                     <button class="filter-btn active" data-filter="all" aria-pressed="true">Todos <span class="filter-count">0</span></button>
                     <button class="filter-btn" data-filter="apps-reais" aria-pressed="false">Apps Reais <span class="filter-count">0</span></button>
@@ -370,6 +369,17 @@
                         <input type="hidden" name="access_key" value="ede1a634-58d0-40a4-98f2-c649102002ec">
                         <input type="text" id="name" name="name" required placeholder="Seu nome">
                         <input type="email" id="email" name="email" required placeholder="seu@email.com">
+                        <div class="form-group rating-group">
+                            <label>Sua avaliação (opcional):</label>
+                            <div class="stars" id="rating-stars">
+                                <!-- As estrelas são invertidas no CSS, então o HTML vai de 5 a 1 -->
+                                <input type="radio" id="star5" name="rating" value="5" /><label for="star5" title="5 estrelas">★</label>
+                                <input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="4 estrelas">★</label>
+                                <input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="3 estrelas">★</label>
+                                <input type="radio" id="star2" name="rating" value="2" /><label for="star2" title="2 estrelas">★</label>
+                                <input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="1 estrela">★</label>
+                            </div>
+                        </div>
                         <textarea id="message" name="message" rows="5" required placeholder="Como posso te ajudar?"></textarea>
                         <button type="submit" class="btn primary">
                             <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
